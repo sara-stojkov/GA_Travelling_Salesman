@@ -2,22 +2,39 @@
 # and mutations
 
 from statistics import mean, median
-from individual import CityOrder
+from individual import CityOrder, cross_over
 
         
 # A generation or population is a group of many individuals
     # add funtions for selection, crossover and mutations
 
 
-def selection(population, population_size, keep_percent):
-    population.sort(reverse=True, key= lambda CityOrder: CityOrder.get_fitness())
-    to_keep = population_size * keep_percent
-    new_population = population[:to_keep]
+def selection(population, new_population, keep_percent, population_size):
+    final_gen = []
+    population.sort(reverse=False, key= lambda CityOrder: CityOrder.get_fitness())
+    to_keep_old = population_size * keep_percent
+    new_gen_to_add = population_size - to_keep_old
+    new_population.sort(reverse=False, key= lambda CityOrder: CityOrder.get_fitness())
+    final_gen = population[:to_keep_old] + new_population[:new_gen_to_add]
 
-    return new_population
+    return final_gen
 
-def crossover(population):
-    pass
+def parent_selection(population):
+
+
+    return parent1, parent2
+
+def crossover_all(population, population_size):
+    child_gen = []
+
+    while len(child_gen) < population_size:
+        parent1, parent2 = parent_selection(population)
+
+        child1, child2 = cross_over(parent1, parent2)
+        child_gen.append(child1)
+        child_gen.append(child2)
+
+    return child_gen
     
 
 def initial_population(size, data):
@@ -35,17 +52,23 @@ def initial_population(size, data):
 
 
 # The idea is to start with initial population and then go through a cycle of selection, breeding and mutating (then calculating the fitness)
-def life_cycle(data, population_size, keep_percent, mutations_chance, max_generations, stop_criteria):
+def life_cycle(data, population_size, keep_percent, mutations_chance, max_generations):
     
     current_gen = initial_population(population_size, data)
 
     gen_counter = 1
 
     # should add another stop criteria, maybe optional
-    while gen_counter < max_generations:
-        selection(current_gen, keep_percent)
-        crossover(current_gen, population_size)
+    while gen_counter <= max_generations:
+        new_gen = crossover_all(current_gen, population_size)
+        current_gen = selection(current_gen, new_gen, keep_percent, population_size)
         # Mutations happen in crossover on new individuals
+        display_generation(current_gen)
+        gen_counter += 1
+    
+    current_gen.sort(reverse=False, key=lambda CityOrder:CityOrder.fitness)
+    print(current_gen[0].order)
+    print(current_gen[0].get_fitness())
 
 
 def display_generation(generation):
