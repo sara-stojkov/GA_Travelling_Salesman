@@ -1,10 +1,12 @@
 from random import random, randint
 from math import sqrt
+import matplotlib.pyplot as plt
 
 class CityOrder(object):
     
     # Each city has its number and x and y coordinates, while an individual is an ordered list of cities
     def __init__(self, order):
+        """Initializes the CityOrder with a list of cities."""
         self.order = order
         self.fitness = self.calc_fitness()
 
@@ -16,6 +18,7 @@ class CityOrder(object):
     
 
     def calc_fitness(self):
+        """Calculates the fitness of the path, which is the total distance of the path."""
         if len(self.order) == 0:
             self.fitness = -1
             return
@@ -27,6 +30,9 @@ class CityOrder(object):
         self.fitness = path_length
 
     def fill_path_random(self, data):
+        """Fills the path with cities in a random order, starting and ending with the same city.
+        
+        :param data: List of City objects."""
 
         city_order = []
         
@@ -77,9 +83,58 @@ class CityOrder(object):
     def print_path(self):
         """Returns a string representation of the path."""
         path_str = " -> ".join(str(city) for city in self.order[:-1])
+        print(f"Path: {path_str}")
+
+    def visualize_path(self):
+        """Animates the path traversal using matplotlib."""
+        import matplotlib.animation as animation
+
+        x_coords = [city.x for city in self.order]
+        y_coords = [city.y for city in self.order]
+
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.set_title('Animated Path Visualization')
+        ax.set_xlabel('X Coordinate')
+        ax.set_ylabel('Y Coordinate')
+        ax.grid()
+
+        # Plot all cities as points
+        ax.scatter(x_coords, y_coords, c='blue', marker='o', label='Cities')
+        # Mark start/end city
+        ax.scatter(x_coords[0], y_coords[0], c='red', marker='s', label='Start/End')
+
+        line, = ax.plot([], [], 'g-', lw=2, label='Path')
+        point, = ax.plot([], [], 'ro', markersize=8)
+
+        def init():
+            line.set_data([], [])
+            point.set_data([], [])
+            return line, point
+
+        def update(frame):
+            line.set_data(x_coords[:frame+1], y_coords[:frame+1])
+            point.set_data([x_coords[frame]], [y_coords[frame]])
+            return line, point
+
+        ani = animation.FuncAnimation(
+            fig, update, frames=len(self.order), init_func=init,
+            interval=400, blit=True, repeat=False
+        )
+
+        # Uncomment the next line to save the animation as a GIF
+        # ani.save("animation.gif", writer="pillow", fps=5)
+
+        ax.legend()
+        plt.show()
             
 
-def cross_over(parent1, parent2):
+def cross_over(parent1, parent2, mutation_chance):
+    """Performs a three-way crossover between two parents to create two children.
+    The crossover is done by selecting two random indices and swapping the segments between them.
+
+    :param parent1: First parent CityOrder object.
+    :param parent2: Second parent CityOrder object."""
+
     k1 = randint(0, len(parent1.order) // 2)
     k2 = randint(len(parent1.order) // 2 + 1, len(parent1.order) - 1)
 
@@ -102,6 +157,9 @@ def cross_over(parent1, parent2):
 
     child1 = create_child(parent1, parent2)
     child2 = create_child(parent2, parent1)
+
+    child1.mutate(mutation_chance)
+    child2.mutate(mutation_chance)
     return child1, child2
         
 
