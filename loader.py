@@ -1,4 +1,4 @@
-from models import City
+from models.City import City
 
 # Handles loading the data from file data_tsp.txt
 # Each line of the txt file contains the number of the city and its x and y coordinates
@@ -18,10 +18,7 @@ def load_cities(file_path):
 
             split_city = line.split()
             print(split_city)
-            cities.append(City(
-                index=int(split_city[0]),
-                x_coord=float(split_city[1]),
-                y_coord=float(split_city[2])
-            ))
-    
+            new_city = City(index=int(split_city[0]), x_coord=float(split_city[1]), y_coord=float(split_city[2]))
+            cities.append(new_city)
+
     return cities
