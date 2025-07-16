@@ -115,7 +115,10 @@ def life_cycle(data, population_size, keep_percent, mutations_chance, max_genera
 
 
 def display_generation(generation, generation_number):
-    """Prints out the 'stats' of a generation, for debugging and process tracking purposes."""
+    """Prints out the 'stats' of a generation, for debugging and process tracking purposes.
+    
+    :param generation: List of CityOrder objects representing the current generation.
+    :param generation_number: Current generation number."""
     fitness_sum = []
     for individual in generation:
         fitness_sum.append(individual.fitness)

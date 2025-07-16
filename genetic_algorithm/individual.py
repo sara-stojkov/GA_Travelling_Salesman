@@ -6,7 +6,9 @@ class CityOrder(object):
     
     # Each city has its number and x and y coordinates, while an individual is an ordered list of cities
     def __init__(self, order):
-        """Initializes the CityOrder with a list of cities."""
+        """Initializes the CityOrder with a list of cities.
+        
+        :param order: List of City objects representing the order of cities in the path."""
         self.order = order
         self.fitness = self.calc_fitness()
 
@@ -18,7 +20,8 @@ class CityOrder(object):
     
 
     def calc_fitness(self):
-        """Calculates the fitness of the path, which is the total distance of the path."""
+        """Calculates the fitness of the path, which is the total distance of the path.
+        The fitness is calculated as the sum of the distances between consecutive cities in the order."""
         if len(self.order) == 0:
             self.fitness = -1
             return
@@ -40,8 +43,8 @@ class CityOrder(object):
         city_order.append(first_and_last_city)
         all_cities = [city for city in data]
         all_cities.remove(first_and_last_city)
-        # data is a list of cities where one element (city) of a list is:
-        # [index, x coord, y coord]
+        # data is a list of cities where one element City of a list has:
+        # number, x, y
         # Iterating through list of cities while emptying at the same time
         while all_cities:
 
