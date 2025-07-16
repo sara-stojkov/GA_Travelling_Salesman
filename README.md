@@ -1,6 +1,6 @@
-# Travelling Salesman Problem (TSP) solved using a Genetic Algorithm
+# Travelling Salesman Problem (TSP) solved using Genetic Algorithm
 
-## 📌 Project Description
+## Project Description
 This repository contains a Python implementation of a Genetic Algorithm (GA) to solve the Travelling Salesman Problem (TSP).
 
 **Problem statement:**
@@ -14,9 +14,9 @@ Given a set of cities defined by their coordinates (x, y), the goal is to find t
 
 The distance between two cities is calculated using the Euclidean distance formula:
 
-d(g1, g2) = sqrt( (x1 - x2)^2 + (y1 - y2)^2 )
+```d(g1, g2) = sqrt( (x1 - x2)^2 + (y1 - y2)^2 )```
 
-### 📂 Input Data
+### Input Data
 
 File: ```data_tsp.txt```
 
@@ -25,9 +25,11 @@ Each line contains a city’s index and its coordinates.
 Example:
 
 ```1 10.0 20.0 ```
+
 ``` 2 15.0 25.0 ```
 ...
-## 🧬 Genetic Algorithm Overview
+
+## Genetic Algorithm Overview
 
 This project implements a GA to find a near-optimal route for the TSP.
 
@@ -35,82 +37,78 @@ This project implements a GA to find a near-optimal route for the TSP.
 
 ### Program structure:
 
-- Reading and parsing input coordinates
+- Reading and parsing input coordinates into _City_ objects
 
 - Initial population generation
 
 - Evaluation of fitness (total path length)
 
-- Selection of individuals for crossover
+- Choosing parent individuals for crossover
 
-- Crossover operator to generate offspring
+- Crossover operation to generate offspring
 
 - Mutation operator to introduce variation
 
-- Replacement strategy for new generations
+- Selection of individuals who will survive onto the next generation
 
-- Termination after a set number of generations or convergence
+- Termination after a set number of generations or convergence to an optimal solution
+
+## Implementation
 
 #### Optimality criterion:
-The best individual in the population represents the shortest total travel distance found so far.
+The best individual in the population represents the shortest total travel distance found so far. That is the individual with the smallest _fitness_ score
 
 #### Mutation operator:
-Typically, a swap mutation: two cities in the tour are randomly selected and their positions swapped.
+Swap operation - mutating a path means swapping n of its cities. The number of cities to swap is variable, between 2 cities and a half of all cities. Adds variability to population.
 
 #### Crossover operator:
-Ordered crossover (OX) or Partially Mapped Crossover (PMX) is commonly used for permutation problems like TSP.
+Implemented a three-way crossover. Since the cities in a path are a list, after choosing 2 points in those lists (_k1_ and _k2_) two children will inherit those three segments as 1-2-1 and 2-1-2 respectively.
 
-#### Selection strategy:
-Tournament selection or roulette wheel selection to choose parents for crossover based on fitness.
+#### Parent selection strategy:
+To introduce a bit of randomness but still favour better paths, roulette wheel selection is implemented. Individuals are ranked by fitness, but then also those ranks are multiplied with a random number to generate the final score.
 
-- Algorithm parameters:
+#### Selection:
+To determine which paths will move on from this generation onto the next, elitism is applied. Only a few select paths from the parent generation survive and the rest of the population is filled with the best from the children population.
 
+#### Algorithm parameters:
 - Population size
-
-- Number of generations
-
-- Crossover probability
-
+- Maximum number of generations
 - Mutation probability
+- Keep percentage (elitism)
 
-## ✅ Results
+## Results
 The output of the algorithm is:
-
 - The best route found (ordered list of cities)
+- The total travel distance for this route (fitness of the best individual)
 
-- The total travel distance for this route
+### Achieved results
+**Chosen parameters as optimal**:  ```max_generations = 500```, ```population_size = 400```, ```keep_percent = 0.2```, ```mutation_chance = 0.2```. They are based on literature and previous tries of running the algorithm.
 
-Note:
-Graphical visualizations or interfaces are not required as per the project specification.
+For the input data provided, the results for the length of the shortest path are typically between 8000 and 9000, the best was around 8249.
 
-## 📖 Documentation
-The project includes documentation in accordance with the standard. It is in the file _documentation/GA_TSP.docx_
+In the ```individual.py``` there is also a function which handles visualizing a path (solution) by an animation showed below.
 
-- Program structure
+![animation](https://github.com/user-attachments/assets/fae219d5-eb8e-4317-8728-195a1b3085e8)
 
-- Optimality criterion
+#### Other solution examples
+Here are provided other solutions achieved with these parameters. They may look alike but that is expected since the input cities are the same, so some sequences are expected to be similar.
+<img width="1250" height="800" alt="image" display="inline" src="https://github.com/user-attachments/assets/8c3e5a16-a4e7-42a6-a2b4-5b5511e2e3e4" />
 
-- Implementation of mutation and crossover operators
+<img width="1250" height="800" alt="image" display="inline" src="https://github.com/user-attachments/assets/5e1268d6-a205-43d4-ad3f-5b061c7274e3" />
 
-- Selection strategy
-
-- Parameter choices
-
-- Example results
 
 ### 🚀 How to Run
-Place your data_tsp.txt in the project directory.
-
-Run the Python script:
-
+1. Place your data_tsp.txt in the project directory.
+2. Run the Python script:
 ```python main.py```
 
-The program outputs the best route and its total length.
+The program outputs the best route and its total length, as well as the visualization of that path
 
 ### ⚙️ Requirements
 - Python 3.x
-
-- Standard libraries: random, math, itertools
+- _matplotlib_ for visualization
+  
+- Standard libraries: random, math, statistics
 
 ### 📑 License
 This project is intended for educational purposes only.
