@@ -92,9 +92,16 @@ In the ```individual.py``` there is also a function which handles visualizing a 
 
 #### Other solution examples
 Here are provided other solutions achieved with these parameters. They may look alike but that is expected since the input cities are the same, so some sequences are expected to be similar.
+<br>
 <img width="1250" height="800" alt="image" display="inline" src="https://github.com/user-attachments/assets/8c3e5a16-a4e7-42a6-a2b4-5b5511e2e3e4" />
 
 <img width="1250" height="800" alt="image" display="inline" src="https://github.com/user-attachments/assets/5e1268d6-a205-43d4-ad3f-5b061c7274e3" />
+
+<br>
+Here is the best one achieved so far with path length of 7760.
+<br> <br>
+<img width="1335" height="923" alt="image" src="https://github.com/user-attachments/assets/4aabd814-d380-4efb-ac1b-4ac0fafb1ee4" />
+
 
 
 ### 🚀 How to Run
