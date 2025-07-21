@@ -80,7 +80,8 @@ class CityOrder(object):
             index2 = indices_to_swap[len(indices_to_swap) - 1 - i]
             self.order[index1], self.order[index2] = self.order[index2], self.order[index1]
 
-        self.order.append(self.order[0])
+        if self.order[-1] != self.order[0]:
+            self.order.append(self.order[0])
         self.calc_fitness()
 
     def print_path(self):
@@ -153,7 +154,9 @@ def cross_over(parent1, parent2, mutation_chance):
             new_order = middle[:]
         else:
             new_order = [rest[0]] + rest[1:k1] + middle + rest[k1:]
-        new_order.append(new_order[0])
+        if new_order[0] != new_order[-1]:
+            # Ensure the path starts and ends with the same city
+            new_order.append(new_order[0])
         child = CityOrder(new_order)
         child.calc_fitness()
         return child
